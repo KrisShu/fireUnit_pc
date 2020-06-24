@@ -1,0 +1,46 @@
+
+.border_dialog{
+    -webkit-border-image: url("../../assets/image/border.png") 27 round;
+    border-image:url("../../assets/image/home/home_img_bg.png") 22 24 repeat stretch;
+    border-style: solid;
+    border-width: 24px 24px;
+}
+@divBG : #072041;
+
+    /* 弹窗 */
+    .el-dialog{
+        width: 1000px;
+        height: 638px;
+        .border_dialog();
+        position: relative;
+        background: @divBG;
+        .el-dialog__headerbtn .el-dialog__close{
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            color: transparent;
+            background: url("../../assets/image/home/dialog_btn_close.png");
+            position: absolute;
+            top: -50px;
+            right: -50px;
+        }
+        .el-dialog__header{
+            height: 70px;
+            padding: 0px;
+            background: url("../../assets/image/home/dialog_bg.png") no-repeat;
+            background-position: center center;
+            .el-dialog__title{
+                color: #fefefe;
+                font-size: 22px;
+                line-height: 70px;
+                text-align: center;
+                width: 100%;
+                display: inline-block;
+            }
+        }
+        .el-dialog__body{
+                padding: 0px;
+                display: flex;
+                height: 418px;
+        }
+    }
