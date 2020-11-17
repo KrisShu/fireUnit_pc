@@ -76,6 +76,7 @@
 </template>
 
 <script>
+
 import baseTable from '../../../components/baseTable/index';
 import baseDialog from '../../../components/baseDialog/index'
 import baseUploadImg from '../../../components/baseUploadImg'
@@ -184,6 +185,7 @@ export default {
             A.dialogVisible = true
             this.PractitionersForm ={}
             this.PractitionersForm.fireUnitInfoID=localStorage.getItem('fireUnitID')
+
         },
         //提交修改信息
         submitForm(){
@@ -239,8 +241,7 @@ export default {
          //关闭弹窗
         closeDialog(){
              this.$refs.PractitionersForm.resetFields();
-        },
-        
+        }
     }
 }
 </script>

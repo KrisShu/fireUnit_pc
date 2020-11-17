@@ -30,18 +30,7 @@
       </baseTable>
       
       <baseDialog title="现场图片" ref="baseDialog">
-            <viewer v-if="srcList.length>0" class="viewer"  :images="srcList">
-                <img
-                    v-for="(img,Imgindex) in srcList"
-                    :key="Imgindex"
-                    style="width: 900px; height: 450px"
-                    :src="img"
-                    fit="cover"
-                ><img>
-            </viewer>
-            <div v-else>
-                暂无图片 
-            </div>
+            <img class="monitorPicture" :src="monitorPicture" alt="">
       </baseDialog>
 
 
@@ -94,11 +83,11 @@ export default {
                 },
                 {
                     name:'摄像编号',
-                    prop:'visionDevice',
+                    prop:'monitorSN',
                 },
                 {
                     name:'监控地点',
-                    prop:'location'
+                    prop:'monitorAddress'
                 },
                 {
                     name:'报警图片',
@@ -106,10 +95,7 @@ export default {
                 },
                 {
                     name:'解除警情时间',
-                    prop:'releaseTime',
-                },
-                {
-                    name:'解除警情图片',
+                    prop:'relieveTime',
                 },
             ],
             totalCount:0,
@@ -120,35 +106,36 @@ export default {
                 MaxResultCount:10
             },
           
-            srcList: []
+            monitorPicture: ''
         }
     },
     created(){
-        this.GetVisionAlarmTsjList();
-        this.GetVisionAlarmTsjNum();
+        this.GetVisionAlarmList_Vision();
+        this.GetVisionAlarmTypeNum();
     },
     methods:{
-        GetVisionAlarmTsjList(){
-            this.$axios.get(this.$api.GetVisionAlarmTsjList,{params:this.page}).then(res=>{
-                console.log("res",res);
+        GetVisionAlarmList_Vision(){
+           
+            this.$axios.get(this.$api.GetVisionAlarmList_Vision,{params:this.page}).then(res=>{
+                console.log("GetVisionAlarmList_Vision",res);
                 for(let arr of res.data.result.items){
                     arr.creationTime = this.delTime(arr.creationTime)
-                    if(arr.releaseTime){
-                          arr.releaseTime = this.delTime(arr.releaseTime)
+                    if(arr.relieveTime){
+                          arr.relieveTime = this.delTime(arr.relieveTime)
                     }
                   
                 };
                 ({totalCount:this.totalCount,items:this.tableData} = res.data.result)
             })
         },
-        GetVisionAlarmTsjNum(){
-            this.$axios.get(this.$api.GetVisionAlarmTsjNum,
+        GetVisionAlarmTypeNum(){
+            this.$axios.get(this.$api.GetVisionAlarmTypeNum,
                 {params:{fireUnitId:this.page.FireUnitId}}
             ).then(res=>{
                 console.log("状态数量",res)
-                this.buttonarr[1].num = res.data.result.passagewayOutdoor
-                this.buttonarr[2].num = res.data.result.passagewayIndoor
-                this.buttonarr[3].num = res.data.result.fire
+                this.buttonarr[1].num = res.data.result[0].value
+                this.buttonarr[2].num = res.data.result[1].value
+                this.buttonarr[3].num = res.data.result[2].value
             })
         },
         //时间处理格式
@@ -169,38 +156,26 @@ export default {
             }else if (text == '全部') {
                  this.page.VisionAlarmType  =0
             }
-            this.GetVisionAlarmTsjList();
+            this.GetVisionAlarmList_Vision();
 
         },
         //查看详情
         showdetails(items,index){
-            console.log("items",items,index)
-            this.srcList =[]
-            this.$refs.baseDialog.dialogVisible = true;
-            let img
-            if(index.column.label == '报警图片'){
-                if (items.alarmPhotoUrl) {
-                    img  = `${this.$URL}${items.alarmPhotoUrl}`
-                    this.srcList.push(img);
-                }
-                
-            }else if(index.column.label == '解除警情图片'){
-                if (items.releasePhotoUrl) {
-                    img = `${this.$URL}${items.releasePhotoUrl}`
-                     this.srcList.push(img);
-                }
-                
-            }
+            this.$refs.baseDialog.dialogVisible = true
+            this.monitorPicture = `${this.$URL}${items.monitorPicture}`
            
         },
         prev_next(p){
             this.page.SkipCount = (p-1)*this.page.MaxResultCount
-            this.GetVisionAlarmTsjList();
+            this.GetVisionAlarmList_Vision();
         }
     }
 }
 </script>
 
-<style>
-
+<style lang="less" >
+.monitorPicture{
+    width: 100%;
+    height: 500px;
+}
 </style>

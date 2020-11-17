@@ -32,7 +32,7 @@ export default {
             tableThead:[
                 {
                     name:'摄像头编号',
-                    prop:'sn',
+                    prop:'monitorSN',
                 },
                 {
                     name:'AI能力',
@@ -40,11 +40,11 @@ export default {
                 },
                 {
                     name:'具体位置',
-                    prop:'location',
+                    prop:'monitorAddress',
                 },
                 {
                     name:'状态',
-                    prop:'aIdetectorStatus',
+                    prop:'status',
                 }
             ],
             tableData:[],
@@ -57,11 +57,12 @@ export default {
         }
     },
     created(){
-        this.GetVisionDeviceListTSJ();
+        this.GetMonitorList();
     },
     methods:{
-        GetVisionDeviceListTSJ(){
-            this.$axios.get(this.$api.GetVisionDeviceListTSJ,
+        GetMonitorList(){
+            // /api/services/app/Vision/GetMonitorList
+            this.$axios.get(this.$api.GetMonitorList,
                 {params:this.page}
             ).then(res=>{
                 console.log("列表",res);
@@ -70,7 +71,7 @@ export default {
         },
         prev_next(page){
             this.page.SkipCount = (page-1)*this.page.MaxResultCount
-            this.GetVisionDeviceListTSJ();
+            this.GetMonitorList();
         }
     }
 }

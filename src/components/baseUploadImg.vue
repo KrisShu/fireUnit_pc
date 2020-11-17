@@ -1,12 +1,41 @@
 <template>
   <div class="uploadimg">
-    <el-image v-if="url" :style="{width: imgWidth,height: imgHeight}" :src="url" fit="cover"></el-image>
+      <div
+        @mouseenter="enter" 
+        @mouseleave="leave"
+        v-if="url" 
+      >
+            <el-image 
+                :style="{width: imgWidth,height: imgHeight}" 
+                :src="url" fit="cover" 
+            >
+            </el-image>
+            <div  v-if="show" class="Mantle">
+                <span
+                    class="el-upload-list__item-preview"
+                    @click="handlePictureCardPreview"
+                >
+                    <i class="el-icon-zoom-in"></i>
+                </span>
+                <span
+                    class="el-upload-list__item-preview"
+                    @click="handleRemove"
+                >
+                    <i class="el-icon-delete"></i>
+                </span>
+            </div>
+      </div>
+   
     <div class="noImg" v-else>
         <img :src="uploadimgIocn" alt="">
     </div>
+    
    
     <el-button  @click="openFile">{{uploadimg}}</el-button>
     <input type="file" ref="uploadInput" @change="upload">
+    <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="url" alt="">
+    </el-dialog>
   </div>
 </template>
 
@@ -38,26 +67,37 @@ export default {
     data(){
         return{
             uploadimgIocn:require("../assets/image/index/upload.png"),
-            urlimg:''
+            show:false,
+            dialogVisible:false,//弹窗是否显示
         }
     },
     watch:{
-        url(val){
-            this.urlimg= val
-        },
-        // urlimg(val){
-        //     console.log(val)
-        //     this.$emit('input',val)
-        // }
+      
     },
     methods:{
+        enter(){
+            this.show = true
+        },
+        leave(){
+            this.show = false
+        },
+        //点击查看大图
+        handlePictureCardPreview(){
+            this.dialogVisible = true
+        },
+        handleRemove(){
+            // this.url = '';  //這樣子會報錯的  子組件不能修改父組件給的值   
+           
+            this.$emit('change','')
+        },
         openFile(){
             let input = this.$refs.uploadInput
             input.click();
         },
         upload(){
             let input = this.$refs.uploadInput
-            let imgFile = input.files[0]
+            let imgFile = input.files[0];
+            console.log("imgFile",imgFile)
             this.fileToBase64(imgFile).then(res=>{
                 this.$emit('change',res)
             })
@@ -89,6 +129,18 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        position: relative;
+        .Mantle{
+            width: 200px;
+            height: 200px;
+            background: rgba(66, 66, 66, 0.8);
+            position: absolute;
+            // z-index: 199;
+            top: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
         .noImg{
             width: 200px;
             height: 200px;

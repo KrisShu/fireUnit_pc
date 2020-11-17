@@ -42,6 +42,7 @@ Vue.use(Viewer, {
 })
 // Vue.prototype.dealTime = dealTime;//处理时间函数
 Vue.prototype.$URL = 'http://fd.sctsjkj.com:5081';
+// Vue.prototype.$URL = 'http://10.10.10.10:5081';
 Vue.prototype.$axios = axios;
 Vue.prototype.$api = api;
 // axios.defaults.baseURL = '/api' /* 线上接口ip地址 */

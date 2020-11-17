@@ -18,9 +18,8 @@
             height: 75px;
             box-sizing: border-box;
         }
-        .el-container{ 
-            display: flex;
-            flex: 2 0 auto;
+        .main_content{
+            overflow: hidden;
             .el-aside{
                 background: @bgColor;
                 .border();
@@ -30,30 +29,39 @@
                 }
             }
             .el-main{
-                flex-grow: 1;
                 background: @bgColor;
-              /*  background: #020d1c; */
                 margin-left: 14px;
                 height: 100%;
                 .border();
+                padding: 0;
+                .el-scrollbar {
+                    height: 100%;
+                    width: 100%;
+                }
+                .el-scrollbar__wrap {
+                    overflow-x: hidden;
+                }
             }
-
         }
+       
+      
     }
 </style>
 <template>
     <div id="dataPageContainer">
+ 
         <base-header></base-header>
-        <el-container>
-             <el-aside width="220px">
-                 <base-aside></base-aside>
-             </el-aside>
-             <el-main>
-                <!-- <el-scrollbar style="height:100%"> -->
-                    <router-view></router-view>
-                <!-- </el-scrollbar> -->
-             </el-main>
-       </el-container>
+        <el-container class="main_content">
+            <el-aside width="220px">
+                <base-aside></base-aside>
+            </el-aside>
+            <el-main>
+                <el-scrollbar>
+                  <router-view></router-view>
+                </el-scrollbar>
+            </el-main>
+        </el-container>
+       
     </div>
 </template>
 

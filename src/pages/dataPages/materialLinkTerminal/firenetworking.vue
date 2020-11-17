@@ -3,21 +3,23 @@
     <!--  -->
     <div class="top_tips">
       <div class="tooltip">
-        <el-popover
-          placement="top-start"
-          trigger="hover"
-        >
-          <div class="content">
-            高频报警部件是指近期频繁报警（近两天平均每天5次及以上报警）的终端探测部件<br/>
-            应勘察频繁报警的终端探测器现场有无蒸汽、油气、粉尘等影响火灾探测器正常工作的环境存在，如有应设法排除。<br/>
-            对于误报频繁而又无其他干扰影响正常工作的火灾探测器，应及时更换。
-          </div>
-          <el-button slot="reference">什么是高频报警部件？</el-button>
-        </el-popover>
+        <el-button  type="primary" @click="screen('全部')" plain round>
+          全部
+          <i v-if="screensign == '全部'" class="el-icon-check  el-icon--right"></i>
+        </el-button>
+        <el-button @click="screen('在线')" type="success" plain round>
+          在线：{{firenetworkState.online}}
+          <i v-if="screensign == '在线'" class="el-icon-check  el-icon--right"></i>
+        </el-button>
+        <el-button @click="screen('离线')" type="info" plain round>
+          离线：{{firenetworkState.offline}}
+          <i v-if="screensign == '离线'" class="el-icon-check  el-icon--right"></i>
+        </el-button>
       </div>
       
       <el-button @click="addNew">新增</el-button>
     </div>
+    
     <!--  -->
     <baseTable 
       v-loading="loading"
@@ -374,10 +376,15 @@ export default {
         }, 1000);
       };
     return{
+      firenetworkState:{
+        online:0,
+        offline:0
+      },
+      screensign:'全部',
       page:{
         FireUnitId:localStorage.getItem('fireUnitID'),
         SkipCount:0,
-        MaxResultCount:10
+        MaxResultCount:10,
       },
       totalCount:0,//火警联网设施总数
       buildList:[],//所在建筑的选择列表
@@ -583,24 +590,38 @@ export default {
     }
   },
   created(){
-     this.GetListByFireUnitId();//初始化所在建筑选择列表
-     this.GetFireAlarmDeviceList();
-     this.GetFireAlarmDeviceModels();
+      this.GetFireAlarmDeviceStateNum();
+      this.GetListByFireUnitId();//初始化所在建筑选择列表
+      this.GetFireAlarmDeviceList();
+      this.GetFireAlarmDeviceModels();
   },
   methods:{
+    GetFireAlarmDeviceStateNum(){
+      this.$axios.get(this.$api.GetFireAlarmDeviceStateNum,{params:this.page}).then(res=>{
+        console.log("res状态数量",res);
+        this.firenetworkState.online = res.data.result[0].value
+        this.firenetworkState.offline = res.data.result[1].value
+      })
+    },
+    //筛选
+    screen(text){
+      this.screensign = text
+      this.page.DeviceState = text;
+      this.GetFireAlarmDeviceList();
+    },
     //table列表
     GetFireAlarmDeviceList(){
       this.loading = true
       this.$axios.get(this.$api.GetFireAlarmDeviceList,{params:this.page}).then(res=>{
         console.log("GetFireAlarmDeviceList",res)
-         this.loading = false
-        if(res.data.result.totalCount){
-          ({items:this.tableData ,totalCount:this.totalCount} = res.data.result);
-          if(res.data.result.items.length == 0 && res.data.result.totalCount >0){
+         this.loading = false;
+        
+        ({items:this.tableData ,totalCount:this.totalCount} = res.data.result);
+        if(res.data.result.items.length == 0 && res.data.result.totalCount >0){
             this.page.SkipCount = 0
             this.GetFireAlarmDeviceList()
-          }
         }
+        
       }).catch(err=>{
         console.log('err',err)
       })
@@ -1067,19 +1088,8 @@ export default {
     .top_tips{
       width: 100%;
       display: flex;
-      align-items: center;
-     
+      align-items: center; 
       justify-content: space-between;
-      .tooltip{
-        .el-button{
-          background: #011524;
-          border: none;
-          color: rgb(214, 206, 206);
-        }
-        .content{
-          padding: 20px;
-        }
-      }
       &>.el-button{
         width: 200px;
         background: #025691;

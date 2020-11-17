@@ -13,6 +13,7 @@ module.exports = {
     proxyTable: {/* 设置跨域的代理服务器 */
       '/api': {
         target: "http://fd.sctsjkj.com:5081",
+        // target: "http://10.10.10.10:5081",
         // target: "http://fd.sctsjkj.com:5080",
         ws: true,
         changeOrigin: true,
@@ -23,6 +24,7 @@ module.exports = {
       '/ueditor': {
         target: "http://fd.sctsjkj.com:5081",
         // target: "http://fd.sctsjkj.com:5080",
+        // target: "http://10.10.10.10:5081",
         ws: true,
         changeOrigin: true,
          pathRewrite: {

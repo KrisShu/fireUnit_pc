@@ -207,7 +207,7 @@ export default {
             },
             {
               url:'AIfacilities',
-              name:'AI智脑',
+              name:'AI智能分析仪',
             },
             {
               url:'pipeNetwork',

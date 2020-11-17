@@ -228,9 +228,9 @@
                             <div class="display_p" v-if="dealData.handleVoiceUrl">
                                 <span> 情况描述：</span>
                                 <div class="vioceUrl"  @click="playVioce(dealData.handleVoiceLength)">
-                                <img src="../../assets/image/index/voice.png" alt="">
-                                <span>{{dealData.vioceUrl}}"</span>
-                            </div>
+                                    <img src="../../assets/image/index/voice.png" alt="">
+                                    <span>{{dealData.vioceUrl}}"</span>
+                                </div>
                             </div>
                         </div>
             </div>
@@ -952,7 +952,7 @@ export default {
         this.GetFireAlarmForDataScreen(true);//火警联网实时达
         this.GetDeviceStatusForDataScreen();//消防物联网状态
         this.GetPatrollist();//巡查日历
-         this.setInterval3 =setInterval(() => {
+        this.setInterval3 =setInterval(() => {
             setTimeout(()=>{
                 this.timeFormate(new Date(),"refreshTime3") //时间
             }, 0)

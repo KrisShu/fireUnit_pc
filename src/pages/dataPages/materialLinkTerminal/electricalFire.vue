@@ -1,75 +1,74 @@
 <template>
   <div class="electricalFireBox">
-   
-    <el-row class="allStatus">
-      <el-col class="allStatus_left" :span="21">
-        <el-button  type="primary" @click="screen('全部')" plain round>
-          全部
-          <i v-if="screensign == '全部'" class="el-icon-check  el-icon--right"></i>
-        </el-button>
-        <el-button @click="screen('良好')" type="success" plain round>
-          良好：{{ElectricDeviceState.goodNum}}
-          <i v-if="screensign == '良好'" class="el-icon-check  el-icon--right"></i>
-        </el-button>
-        <el-button @click="screen('隐患')" type="warning" plain round>
-          隐患：{{ElectricDeviceState.badNum}}
-          <i v-if="screensign == '隐患'" class="el-icon-check  el-icon--right"></i>
-        </el-button>
-        <el-button @click="screen('超限')" type="danger" plain round>
-          超限：{{ElectricDeviceState.warnNum}}
-          <i v-if="screensign == '超限'" class="el-icon-check  el-icon--right"></i>
-        </el-button>
-        <el-button @click="screen('故障')" type="warning" plain round>
-          故障：{{ElectricDeviceState.faultNum}}
-          <i v-if="screensign == '故障'" class="el-icon-check  el-icon--right"></i>
-        </el-button>
-        <el-button @click="screen('离线')" type="info" plain round>
-          离线：{{ElectricDeviceState.offlineNum}}
-          <i v-if="screensign == '离线'" class="el-icon-check  el-icon--right"></i>
-        </el-button>
-       
-      
+    
+      <el-row class="allStatus">
+        <el-col class="allStatus_left" :span="21">
+          <el-button  type="primary" @click="screen('全部')" plain round>
+            全部
+            <i v-if="screensign == '全部'" class="el-icon-check  el-icon--right"></i>
+          </el-button>
+          <el-button @click="screen('良好')" type="success" plain round>
+            良好：{{ElectricDeviceState.goodNum}}
+            <i v-if="screensign == '良好'" class="el-icon-check  el-icon--right"></i>
+          </el-button>
+          <el-button @click="screen('隐患')" type="warning" plain round>
+            隐患：{{ElectricDeviceState.badNum}}
+            <i v-if="screensign == '隐患'" class="el-icon-check  el-icon--right"></i>
+          </el-button>
+          <el-button @click="screen('超限')" type="danger" plain round>
+            超限：{{ElectricDeviceState.warnNum}}
+            <i v-if="screensign == '超限'" class="el-icon-check  el-icon--right"></i>
+          </el-button>
+          <el-button @click="screen('故障')" type="warning" plain round>
+            故障：{{ElectricDeviceState.faultNum}}
+            <i v-if="screensign == '故障'" class="el-icon-check  el-icon--right"></i>
+          </el-button>
+          <el-button @click="screen('离线')" type="info" plain round>
+            离线：{{ElectricDeviceState.offlineNum}}
+            <i v-if="screensign == '离线'" class="el-icon-check  el-icon--right"></i>
+          </el-button>
         
-        <el-popover
-          placement="top-start"
-          trigger="hover"
-        >
-          <div class="content">
-            <p style="color:rgb(59, 218, 11)" class="green">在线：当前与数据中心通讯正常的装置，其状态可能为良好/隐患/超限</p>
-            <p style="color:gray" class="gray">离线：当前与数据中心通讯异常的装置</p>
-            <p style="color:rgb(59, 218, 11)" class="green">良好：当前监测数值在上限值的80%以下</p>
-            <p style="color:orange" class="yellow">隐患：当前监测数值达到上限值的80%及以上</p>
-            <p style="color:#F56C6C" class="orange">超限：当前监测数值达到上限值的100%及以上</p>
-          </div>
-         <img  slot="reference" src="../../../assets/image/index/tooltip.png">
-        </el-popover>
         
+          
+          <el-popover
+            placement="top-start"
+            trigger="hover"
+          >
+            <div class="content">
+              <p style="color:rgb(59, 218, 11)" class="green">在线：当前与数据中心通讯正常的装置，其状态可能为良好/隐患/超限</p>
+              <p style="color:gray" class="gray">离线：当前与数据中心通讯异常的装置</p>
+              <p style="color:rgb(59, 218, 11)" class="green">良好：当前监测数值在上限值的80%以下</p>
+              <p style="color:orange" class="yellow">隐患：当前监测数值达到上限值的80%及以上</p>
+              <p style="color:#F56C6C" class="orange">超限：当前监测数值达到上限值的100%及以上</p>
+            </div>
+          <img  slot="reference" src="../../../assets/image/index/tooltip.png">
+          </el-popover>
+          
 
-      </el-col>
-      <el-col class="allStatus_right" :span="3">
-        <el-button @click="addNew" type="primary" plain>新增</el-button>
-      </el-col>
-      
-    </el-row>
-    <!--  -->
-    <baseTable 
-      v-loading="loading"
-      element-loading-text="拼命加载中"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)"
-      :tableThead="tabelThead"
-      :tableData='tableData'
-      :totalCount="ElectricTotalCount"
-      :pageSize="8"
-      :iselectric="true"
-      @getdialogContent='getcontent'
-      @showdetails="GetFireElectricDevice"
-      @deleteInfo="DeleteFireElectricDevice"
-      @pageChange="prev_next"
-      @getrefresh="refresh"
-      @Poweroff="poweroff"
-
-      ></baseTable>
+        </el-col>
+        <el-col class="allStatus_right" :span="3">
+          <el-button @click="addNew" type="primary" plain>新增</el-button>
+        </el-col>
+        
+      </el-row>
+      <!--  -->
+        <baseTable 
+          v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
+          :tableThead="tabelThead"
+          :tableData='tableData'
+          :totalCount="ElectricTotalCount"
+          :pageSize="8"
+          :iselectric="true"
+          @getdialogContent='getcontent'
+          @showdetails="GetFireElectricDevice"
+          @deleteInfo="DeleteFireElectricDevice"
+          @pageChange="prev_next"
+          @getrefresh="refresh"
+          @Poweroff="poweroff"
+        ></baseTable>
 
     <!--新增或详情弹窗  -->
     <baseDialog title="消防设备" @closeDialog="closeDialog" ref="baseDialog">
@@ -350,7 +349,6 @@
             <span class="demonstration">日期范围</span>
             <el-date-picker
               v-model="trend_date"
-              default-value="2019-12-25"
               type="daterange"
               value-format="yyyy-MM-dd"
               range-separator="至"
@@ -365,7 +363,7 @@
           <el-col :span="7">
             <el-scrollbar style="height:400px">
               <div class="left_list">
-                <p v-for="item in trendData" :key="item.time">
+                <p v-for="(item,index) in trendData" :key="index">
                   <span class="time">{{item.time}}</span>
                   <span class="gap">-</span>
                   <span class="green" v-if="item.value<trendData_max*0.8" >{{item.value}} {{trendUnit}}</span>
@@ -393,6 +391,7 @@
 </template>
 
 <script>
+let moment = require('moment')
 import baseTable from '../../../components/baseTable/index'
 import baseDialog from '../../../components/baseDialog'
 export default {
@@ -515,7 +514,7 @@ export default {
       ],
       starttime:'',
       endtime:'',
-      trend_date:'',
+      trend_date:[moment().subtract(1,'months').format('YYYY-MM-DD'),moment().format('YYYY-MM-DD')],
       RecordElectric:{},//趋势指标数据
       trendData:[],
       trendUnit:'',
@@ -794,35 +793,15 @@ export default {
         console.log("删除失败",err)
       })
     },
-    getNowTime(){
-      let timeDate = new Date();
-      let year = timeDate.getFullYear();//得到年份
-      let moth = timeDate.getMonth()+1 <10 ? '0'+(timeDate.getMonth()+1) : timeDate.getMonth()+1; //得到月份
-      let date = timeDate.getDate()<10 ?  '0'+timeDate.getDate() : timeDate.getDate(); //得到日期
-      let time = year +'-'+moth +'-'+date
-      return time  //把时间抛出去
-     
-    },
-    getpreTime(){
-      let timeDate = new Date();
-      var preDate = new Date(timeDate.getTime() - 24*60*60*1000); 
-      let year = preDate.getFullYear();//得到年份
-      let moth = preDate.getMonth()+1 <10 ? '0'+(preDate.getMonth()+1) : preDate.getMonth()+1; //得到月份
-      let date = preDate.getDate()<10 ?  '0'+preDate.getDate() : preDate.getDate(); //得到日期
-      let time = year +'-'+moth +'-'+date
-      return time  //把时间抛出去
-     
-    },
     //获取当前数值
     getcontent(item,name){
         this.$refs.trendDialog.dialogVisible = true;
         this.RecordElectric.DeviceId = item.deviceId
         this.RecordElectric.Sign  = name
-        this.RecordElectric.Start = null
-        this.RecordElectric.End = null
-        this.trend_date =''
-        this.endtime = this.getNowTime()
-        this.starttime = this.getpreTime()
+        this.RecordElectric.Start = moment().subtract(1,'months').format('YYYY-MM-DD');
+        this.RecordElectric.End = moment().format('YYYY-MM-DD')
+        this.endtime = moment().format('YYYY-MM-DD')
+        this.starttime = moment().subtract(1,'months').format('YYYY-MM-DD');
 
         // this.RecordElectric.Identify = 'L'
         this.GetRecordElectric();
@@ -832,7 +811,7 @@ export default {
     //获取指标趋势
     async  GetRecordElectric(){
       await  this.$axios.get(this.$api.GetRecordElectric,{params:this.RecordElectric}).then(res=>{
-        console.log("获取趋势",res)
+        // console.log("获取趋势",res)
             if(res.data.result.monitorItemName !=null){
               this.monitorItemName = this.RecordElectric.Sign
               if(this.RecordElectric.Sign == 'A'){
@@ -947,7 +926,7 @@ export default {
     },
     //查询指标趋势
     selectadtetrend(){
-      console.log("value1",this.trend_date)
+      // console.log("value1",this.trend_date)
       this.RecordElectric.Start = this.trend_date[0]
       this.RecordElectric.End = this.trend_date[1]
       this.starttime = this.trend_date[0]
@@ -961,6 +940,7 @@ export default {
 <style lang="less">
   .electricalFireBox{
     color: white;
+    height: 100%;
     .allStatus{
       .allStatus_left{
         .all_btn{
@@ -981,10 +961,12 @@ export default {
         }
       }
     }
+    
+
     .el-dialog__body{
-      display: flex;
-      justify-content: center;
-    }
+        display: flex;
+        justify-content: center;
+      }
     .flex1{
       display: flex;
       align-items: center;

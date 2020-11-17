@@ -75,6 +75,10 @@ const API = {
     GetFireUnitInfo:"/api/services/app/FireUnit/GetFireUnitInfo",//（单个防火单位）防火单位详情
     GET_FIRE_UNIT_REPORT_DATA: "/api/services/app/FireUnit/GetFireUnitReportData", //得到防火单位报表数据
     Update:'/api/services/app/FireUnit/Update',//修改防火单位信息
+
+    GetFireUnitCard:'/api/services/app/FireUnit/GetFireUnitCard',//获取防火单位熟悉卡详情
+    UpdateFireUnitCard:'/api/services/app/FireUnit/UpdateFireUnitCard',//修改单位熟悉卡
+
     //---建筑信息
     ArchitectureAdd:'/api/services/app/FireUnitArchitecture/Add',//添加建筑
     GetListByFireUnitId:'/api/services/app/FireUnitArchitecture/GetListByFireUnitId',//获取总得建筑信息
@@ -114,6 +118,7 @@ const API = {
     DeleteMiniFireAction : "/api/services/app/MiniFireStation/DeleteMiniFireAction", //删除某一条活动记录
 
     //消防设施
+    GetFireAlarmDeviceStateNum:'/api/services/app/FireDevice/GetFireAlarmDeviceStateNum',// 获取某个防火单位的火警联网设施状态数量
     GetFireAlarmDeviceList:'/api/services/app/FireDevice/GetFireAlarmDeviceList',//获取指定防火单位ID的火警联网设施列表
     AddFireAlarmDevice:'/api/services/app/FireDevice/AddFireAlarmDevice',//新增火警联网设备
     GetFireAlarmDeviceModels:'/api/services/app/FireDevice/GetFireAlarmDeviceModels',//获取火警联网设备型号数组
@@ -189,9 +194,9 @@ const API = {
 
     GetFireUnitReport:'/api/services/app/FireUnit/GetFireUnitReport',//获取防火单位的综合数据报告
     
-    GetVisionAlarmTsjNum:'/api/services/app/Alarm/GetVisionAlarmTsjNum',// 获得防火单位（天树聚）消防分析仪报警数目
-    GetVisionAlarmTsjList:'/api/services/app/Alarm/GetVisionAlarmTsjList',//获取防火单位（天树聚）消防分析仪报警列表数据
-    GetVisionDeviceListTSJ:'/api/services/app/FireDevice/GetVisionDeviceListTSJ',//获取消防分析仪设备列表(天树聚)
+    GetVisionAlarmTypeNum:'/api/services/app/Vision/GetVisionAlarmTypeNum',//获取AI智能分析仪警情各类型数据
+    GetVisionAlarmList_Vision:'/api/services/app/Vision/GetVisionAlarmList',//获取AI智能分析仪警情列表
+    GetMonitorList:'/api/services/app/Vision/GetMonitorList',//获取AI智能分析仪设备列表
 
   }
   ;

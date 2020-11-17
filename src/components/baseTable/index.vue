@@ -156,7 +156,13 @@
 <template>
     <div class="baseTable_pagenation">
 
-        <el-table  ref="interfaceTable" highlight-current-row  :data="tableData" style="width: 100%" @row-click="handleRowClick">
+        <el-table  
+            ref="interfaceTable" 
+            highlight-current-row  
+            :data="tableData" 
+            style="width: 100%"
+            @row-click="handleRowClick"
+        >
             <el-table-column
                 v-for="(arr,index) in tableThead"
                 :key="index" 
@@ -265,10 +271,10 @@
                         <span v-if="scope.row[arr.prop]  == 2">水压</span>
                     </p>
                     <!-- Ai智能分析设施 -->
-                    <p v-else-if="arr.prop == 'aIdetectorStatus'">
-                        <span  v-if="scope.row[arr.prop]  == 0">未连接</span>
-                        <span class="green" v-if="scope.row[arr.prop]  == 1">监控中</span>
-                        <span class="yellow" v-if="scope.row[arr.prop]  == 2">报警中</span>
+                    <p v-else-if="arr.prop == 'status'">
+                      
+                        <span class="yellow" v-if="scope.row[arr.prop]  == -1">离线</span>
+                        <span class="green" v-if="scope.row[arr.prop]  == 1">在线</span>
                     </p>
                     <p v-else-if="arr.prop == 'currentValue'">
                         <span v-if="scope.row[arr.prop]">{{scope.row[arr.prop]}}</span>
@@ -421,7 +427,7 @@ export default {
     },
     methods:{
         getcontent(item,propName){
-            console.log(item,propName)
+            // console.log(item,propName)
             this.$emit('getdialogContent',item,propName)
         },
         getDetail(index,row,specailText){
