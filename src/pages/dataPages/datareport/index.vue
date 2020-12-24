@@ -261,8 +261,6 @@ export default {
 
             let printHtml = document.getElementById('dataReportBox').innerHTML
             window.document.body.innerHTML = printHtml;
-            // this.remove_ie_header_and_footer();
-            // this.print()
             window.print();
             window.location.reload();
         },

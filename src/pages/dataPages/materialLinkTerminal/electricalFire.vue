@@ -502,16 +502,7 @@ export default {
           width:'350px'
         },
       ],
-      tableData:[
-        {
-          code:'8644444444444444',
-          build:'1号楼',
-          floor:'12',
-          address:'楼道配备箱',
-          status:'良好',
-          nowdata:['2','f','4']
-        }
-      ],
+      tableData:[],
       starttime:'',
       endtime:'',
       trend_date:[moment().subtract(1,'months').format('YYYY-MM-DD'),moment().format('YYYY-MM-DD')],
@@ -581,12 +572,10 @@ export default {
         duration: 0,
         type: 'success'
       });
-      // this.loading = true;
       let electricDeviceId = item.deviceId;
       this.$axios.get(this.$api.GetSingleElectricDeviceData,{params:{electricDeviceId}}).then(res=>{
-        console.log("获取刷新数据",res)
+        // console.log("获取刷新数据",res)
         this.m.close();
-        // this.loading = false;
         if(res.data.result.result){
           this.$message({
             message: '刷新数值成功!',
@@ -594,15 +583,24 @@ export default {
             showClose: true,
             duration:3000
           });
-          this.GetFireElectricDeviceList();
+          this.tableData.forEach((item,index)=>{
+            if(item.deviceId == electricDeviceId){
+              this.$set(this.tableList[index],'state',res.data.result.deviceData.state)
+              this.$set(this.tableData[index],'l',res.data.result.deviceData.l)
+              this.$set(this.tableData[index],'l1',res.data.result.deviceData.l1)
+              this.$set(this.tableData[index],'l2',res.data.result.deviceData.l2)
+              this.$set(this.tableData[index],'l3',res.data.result.deviceData.l3)
+              this.$set(this.tableData[index],'n',res.data.result.deviceData.n)
+              this.$set(this.tableData[index],'a',res.data.result.deviceData.a)
+            }
+          })
         }else{
           this.$message({
-            message: '刷新数值超时，请稍后再试',
+            message: '设备响应超时，请稍后再试',
             type: 'warning',
             showClose: true,
             duration:5000
           });
-          
         }
       }).catch(err=>{
         console.log("获取刷新数据失败",err)

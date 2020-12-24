@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 
-axios.defaults.timeout = 6000
+// axios.defaults.timeout = 6000
 axios.interceptors.request.use(
     config =>{
         return config
