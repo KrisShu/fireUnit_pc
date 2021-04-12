@@ -30,8 +30,8 @@
                         <div class="grid-content">
                             <el-row class="pd20" :gutter="20">
                                 <el-col :span="12">
-                                    <el-form-item  label="设备地址" prop="deviceAddress">
-                                        <el-input v-model="piepNetworkForm.deviceAddress" placeholder="请选填写设备地址"></el-input >
+                                    <el-form-item  label="设备编号" prop="deviceSN">
+                                        <el-input v-model="piepNetworkForm.deviceSN" placeholder="请选填写设备地址"></el-input >
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
@@ -46,62 +46,8 @@
                             <el-row class="margin20 pd20">
                                 <el-col :span="24">
                                     <el-form-item  label="安装位置">
-                                        <el-input  v-model="piepNetworkForm.location" placeholder="请输入设备型号"></el-input>
+                                        <el-input  v-model="piepNetworkForm.location" placeholder="请输入安装位置"></el-input>
                                     </el-form-item>
-                                </el-col>
-                            </el-row>
-                        </div>
-                    </el-col>
-                </el-row>
-                <!-- 联网网关 -->
-                <el-row class="baseBox" :gutter="20">
-                    <el-col class="left_box" :span="4">
-                        <div class="grid-content basetitle">联网网关</div>
-                    </el-col>
-                    <el-col :span="20">
-                        <div class="grid-content">
-                            <el-row class="pd20" :gutter="20">
-                                <el-col :span="12">
-                                    <el-form-item  label="设备型号" prop="gateway_Model">
-                                        <el-select  v-model="piepNetworkForm.gateway_Model" placeholder="请选择设备型号">
-                                            <el-option 
-                                                v-for="item in FireWaterDeviceTypes"
-                                                :key="item"
-                                                :label="item"
-                                                :value="item"
-                                            >
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="12">
-                                    <el-form-item  label="设备编号" prop="gateway_Sn">
-                                        <el-input  v-model="piepNetworkForm.gateway_Sn" placeholder="请填写设备编号"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row class="pd20">
-                                <el-col :span="24">
-                                    <el-form-item  label="安装位置">
-                                        <el-input  v-model="piepNetworkForm.gateway_Location" placeholder="请输入网关安装位置"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row class="pd20" :gutter="20">
-                                <el-col :span="12">
-                                    <el-form-item  label="通讯方式" prop="gateway_NetComm">
-                                        <el-select  v-model="piepNetworkForm.gateway_NetComm" placeholder="请选择通讯方式">
-                                            <el-option label="以太网" value="以太网"></el-option>
-                                            <el-option label="WIFI" value="WIFI"></el-option>
-                                            <el-option label="NB-IOT" value="NB-IOT"></el-option>
-                                            <el-option label="4G" value="4G"></el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col  :span="12">
-                                    <p v-if="piepNetworkForm.gateway_DataRate" class="marginleft10">数据采集频率：{{piepNetworkForm.gateway_DataRate}}</p>
-                                    <p v-else class="marginleft10">数据采集频率：2小时</p>
-                                
                                 </el-col>
                             </el-row>
                         </div>
@@ -154,8 +100,9 @@
                             </el-row>
                             <el-row class="pd20">
                                 <el-col :span="24">
-                                    <el-form-item  label="超限动作" prop="">
-                                        <el-checkbox v-model="piepNetworkForm.enableCloudAlarm">云端报警</el-checkbox>
+                                    <el-form-item  class="enableAlarmSMS" label="超限动作" prop="">
+                                        <el-checkbox v-model="piepNetworkForm.enableAlarmSMS">发送短信</el-checkbox>
+                                         <el-input placeholder="短信接收号码，多个以英文逗号分隔" v-model="piepNetworkForm.smsPhones"></el-input>
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -189,8 +136,8 @@ export default {
             tableData:[],
             tableThead:[
                 {
-                    name:'设备地址',
-                    prop:'deviceAddress'
+                    name:'设备编号',
+                    prop:'deviceSN'
                 },
                 {
                     name:'监控类型',
@@ -218,19 +165,19 @@ export default {
                 MaxResultCount:10
             },
             rules:{
-                deviceAddress:[{ required: true, message: "请填写设备地址", trigger: "change" }]
+                deviceSN:[{ required: true, message: "请填写设备编号", trigger: "change" }]
             },
             totalCount:0,
             FireWaterDeviceTypes:[],//设备类型
             piepNetworkForm:{
                 monitorType:1,
-                enableCloudAlarm:true,
+                enableAlarmSMS:true,
                 minThreshold:'0.5',
                 maxThreshold:'10'
             },
             piepNetworkForm_add:{
                 monitorType:1,
-                enableCloudAlarm:true,
+                enableAlarmSMS:true,
                 minThreshold:'0.5',
                 maxThreshold:'10'
             },
@@ -270,6 +217,7 @@ export default {
             let stringform = JSON.stringify(this.piepNetworkForm_add)
             this.piepNetworkForm = JSON.parse(stringform)
         },
+        //新增和修改提交
         addupdate_Sbumit(){
             console.log(localStorage.getItem('fireUnitID'))
             this.$refs.form.validate(valid => {
@@ -420,6 +368,14 @@ export default {
                                     }
                                     .el-radio__label{
                                         color: white;
+                                    }
+                                }
+                                &.enableAlarmSMS{
+                                    .el-form-item__content{
+                                        display: flex;
+                                    }
+                                    .el-input{
+                                        width: 48%;
                                     }
                                 }
                             }
