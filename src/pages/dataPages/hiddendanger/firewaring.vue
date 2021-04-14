@@ -588,6 +588,7 @@ export default {
                 {params:{FireUnitId, 
                         MaxResultCount:this.MaxResultCount, 
                         SkipCount:(dataPage-1)*this.MaxResultCount,
+                        VisitSource:1,
                         CheckStates}
                 }).then(res=>{
                     console.log("获取火警联网数据列表",res);

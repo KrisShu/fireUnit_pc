@@ -87,6 +87,9 @@ const API = {
     ArchitectureUpdate:'/api/services/app/FireUnitArchitecture/Update',//修改建筑信息
     UpdateFloor:'/api/services/app/FireUnitArchitecture/UpdateFloor',//修改楼层信息
     GetFloorById:"/api/services/app/FireUnitArchitecture/GetFloorById",//根据楼层Id获取楼层信息
+    AddFloor:'/api/services/app/FireUnitArchitecture/AddFloor',//添加楼层
+    DeleteFloor:'/api/services/app/FireUnitArchitecture/DeleteFloor',// 删除楼层
+
 
     //消防从业人员
     GetFireUnitPeople:'/api/services/app/AppGuideSet/GetFireUnitPeople',//获取

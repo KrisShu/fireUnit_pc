@@ -12,6 +12,8 @@
             <div class="left_box">
                 <div class="button_Box_adddelete">
                     <el-button v-if="!isshowRight" @click="addNewArchitecture">新增建筑</el-button>
+                    <el-button v-if="!isshowRight"  @click="addNewArchitecture_floor">新增楼层</el-button>
+
                 </div>
                 <!--  -->
                 <div class="treeNode" v-if="ishavebuild">
@@ -37,10 +39,31 @@
                     <BaserightForm @cancel="cancel" v-if="isshowRight2"  @deletebuild="deletebuild" v-model="facilitiesForm"></BaserightForm>
             </div>
             <div class="right_box" v-if="!isbuild">
-                <BaseRightFloor :floorinformation_id="floorinformation_id" v-model="floorinformation"></BaseRightFloor>
+                <BaseRightFloor @DeleteFloor="GetListByFireUnitId" :floorinformation_id="floorinformation_id"  v-model="floorinformation"></BaseRightFloor>
             </div>
         </el-col>
     </el-row>
+
+    <baseDialog width="30%" ref="addfloor_Dialog" title=" 新增楼层">
+        <el-form :model="add_floorForm"  ref="add_floorForm" label-width="100px" class="add_floorForm">
+            <el-form-item label="建筑名称:" prop="architectureId">
+                    <el-select v-model="add_floorForm.architectureId" placeholder="请选择活动区域">
+                        <el-option 
+                        v-for="(arr,x) in allbuild_data" 
+                        :key="x" 
+                        :label="arr.name" 
+                        :value="arr.id"></el-option>
+                    </el-select>
+            </el-form-item>
+            <el-form-item label="楼层名称:" prop="floorName">
+                <el-input v-model="add_floorForm.floorName"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit">确定</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+        </el-form>
+    </baseDialog>
   </div>
 </template>
 
@@ -48,10 +71,12 @@
 
 import BaserightForm from './BaserightForm'
 import BaseRightFloor from './baseRightFloor'
+import baseDialog from '../../../components/baseDialog'
 export default {
   components: {
     BaserightForm,
-    BaseRightFloor
+    BaseRightFloor,
+    baseDialog
   },
     data() {
         return {
@@ -93,6 +118,14 @@ export default {
             floorinformation:'',
             floor_pic:'',//楼层图片
 
+                //新增楼层
+            add_floorForm:{
+                architectureId:'',
+                floorName:''
+            },
+            firstbuildID:0,
+            allbuild_data:[],//所有建筑信息
+
         };
     },
     created(){
@@ -114,6 +147,10 @@ export default {
                     this.isbuild = true
                     this.isshowRight = false
                     this.data = res.data.result
+                    this.allbuild_data =  res.data.result
+                    this.firstbuildID = res.data.result[0].id
+                    sessionStorage.setItem('architectureId',res.data.result[0].id)
+                    this.add_floorForm.architectureId  = this.firstbuildID
                 
                     this.$nextTick(()=>{
                         this.$refs.vuetree.setCurrentKey(res.data.result[0].id);
@@ -134,6 +171,8 @@ export default {
         //获取某个建筑的具体信息
         ArchitectureGetById(id){
             console.log("某建筑的id",id)
+            this.add_floorForm.architectureId = id
+            sessionStorage.setItem('architectureId',id)
             this.$axios.get(this.$api.ArchitectureGetById,{params:{id}}).then(res=>{
                 console.log('获取某建筑的具体信息',res)
                 let form = res.data.result;
@@ -197,6 +236,23 @@ export default {
             // this.$refs.vuetree.setCurrentKey('');
 
         },
+        //新增楼层按钮
+        addNewArchitecture_floor(){
+            this.$refs.addfloor_Dialog.dialogVisible = true
+        },
+        //提交新的楼层
+        onSubmit(){
+            this.$axios.post(this.$api.AddFloor,this.add_floorForm).then(res=>{
+                console.log("新增楼层",res)
+                this.$message({
+                    message: '新增楼层成功',
+                    type: 'success'
+                });
+                this.$refs.addfloor_Dialog.dialogVisible = false
+                this.GetListByFireUnitId();
+
+            })
+        }
         
         
     }
@@ -208,6 +264,9 @@ export default {
 .ArchitectureInformationBox {
     .left_box {
         .button_Box_adddelete{
+            .el-button+.el-button{
+                margin-left: 0;
+            }
             &>.el-button{
                 width: 200px;
                 background: #093169;
@@ -253,8 +312,22 @@ export default {
         }
         
     }
-  .right_box {
-    
-  }
+    .right_box {
+        
+    }
+    .add_floorForm{
+        width: 100%;
+        // display: flex;
+        padding: 20% 0;
+        .el-form-item{
+            label{
+                color: white;//#025691
+            }
+            .el-input__inner{
+                background: #025691;
+                color: white;
+            }
+        }
+    }
 }
 </style>

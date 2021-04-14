@@ -48,7 +48,7 @@
                     </el-row>
                     
                     <!--  -->
-                    <el-row class="floor_box"> 
+                    <!--   <el-row class="floor_box"> 
                         <el-col class="el_col_tips" :span="5">
                             <span class="must_label floorNum">建筑层数</span>
                         </el-col>
@@ -66,7 +66,7 @@
                                 </el-col>
                             </el-row>
                         </el-col>
-                    </el-row>
+                    </el-row> -->
                     <!--  -->
                     <el-form-item label="建造年代">
                         <el-input placeholder="请输入年份" v-model="facilitiesForm.buildYear">
